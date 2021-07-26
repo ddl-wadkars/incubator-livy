@@ -119,14 +119,14 @@ class LivyServer extends Logging {
       val launch_keytab = livyConf.get(LAUNCH_KERBEROS_KEYTAB)
       val launch_principal = SecurityUtil.getServerPrincipal(
         livyConf.get(LAUNCH_KERBEROS_PRINCIPAL), host)
-      require(launch_keytab != null,
-        s"Kerberos requires ${LAUNCH_KERBEROS_KEYTAB.key} to be provided.")
-      require(launch_principal != null,
-        s"Kerberos requires ${LAUNCH_KERBEROS_PRINCIPAL.key} to be provided.")
-      if (!runKinit(launch_keytab, launch_principal)) {
-        error("Failed to run kinit, stopping the server.")
-        sys.exit(1)
-      }
+      //require(launch_keytab != null,
+      //  s"Kerberos requires ${LAUNCH_KERBEROS_KEYTAB.key} to be provided.")
+      //require(launch_principal != null,
+      //  s"Kerberos requires ${LAUNCH_KERBEROS_PRINCIPAL.key} to be provided.")
+      //if (!runKinit(launch_keytab, launch_principal)) {
+      //  error("Failed to run kinit, stopping the server.")
+      //  sys.exit(1)
+     // }
       // This is and should be the only place where a login() on the UGI is performed.
       // If an other login in the codebase is strictly needed, a needLogin check should be added to
       // avoid anyway that 2 logins are performed.
@@ -134,7 +134,7 @@ class LivyServer extends Logging {
       // order to work properly and previously Livy was using a UGI generated from the cached TGT
       // (created by the kinit command).
       if (livyConf.getBoolean(LivyConf.THRIFT_SERVER_ENABLED)) {
-        UserGroupInformation.loginUserFromKeytab(launch_principal, launch_keytab)
+       // UserGroupInformation.loginUserFromKeytab(launch_principal, launch_keytab)
       }
       ugi = UserGroupInformation.getCurrentUser
       startKinitThread(launch_keytab, launch_principal)
@@ -361,12 +361,14 @@ class LivyServer extends Logging {
     executor.schedule(
       new Runnable() {
         override def run(): Unit = {
-          if (runKinit(keytab, principal)) {
+          //if (runKinit(keytab, principal)) {
+          if (true) {
             // The current UGI should never change. If that happens, it is an error condition and
             // relogin the original UGI would not update the current UGI. So the server will fail
             // due to no valid credentials. The assert here allows to fast detect this error
             // condition and fail immediately with a meaningful error.
             assert(ugi.equals(UserGroupInformation.getCurrentUser), "Current UGI has changed.")
+            //This code performs a login based on ticket cache
             ugi.reloginFromTicketCache()
             // schedule another kinit run with a fixed delay.
             executor.schedule(this, refreshInterval, TimeUnit.MILLISECONDS)
