@@ -69,7 +69,10 @@ Livy is built using [Apache Maven](http://maven.apache.org). To check out and bu
 git clone https://github.com/apache/incubator-livy.git
 cd incubator-livy
 mvn package
+//If you want to skip tests 
+mvn package   -Dmaven.test.skip=true
 ```
+The resulting package is in the folder - assembly/target/apache-livy-0.8.0-incubating-SNAPSHOT-bin.zip
 
 By default Livy is built against Apache Spark 2.4.5, but the version of Spark used when running
 Livy does not need to match the version used to build Livy. Livy internally handles the differences
