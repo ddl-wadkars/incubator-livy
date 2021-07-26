@@ -208,7 +208,7 @@
     <module>core/scala-2.12</module>
     <module>coverage</module>
     <module>examples</module>
-    <module>python-api</module>
+    <!-- <module>python-api</module> -->
     <module>repl</module>
     <module>repl/scala-2.11</module>
     <module>repl/scala-2.12</module>
@@ -696,7 +696,7 @@
           <version>2.19</version>
           <configuration>
             <environmentVariables>
-              <LIVY_TEST>true</LIVY_TEST>
+              <LIVY_TEST>false</LIVY_TEST>
               <SPARK_HOME>${spark.home}</SPARK_HOME>
               <LIVY_SPARK_VERSION>${spark.version}</LIVY_SPARK_VERSION>
             </environmentVariables>
@@ -716,14 +716,14 @@
             <failIfNoTests>false</failIfNoTests>
           </configuration>
         </plugin>
-
+<!--
         <plugin>
           <groupId>org.scalatest</groupId>
           <artifactId>scalatest-maven-plugin</artifactId>
           <version>2.0.0</version>
           <configuration>
             <environmentVariables>
-              <LIVY_TEST>true</LIVY_TEST>
+              <LIVY_TEST>false</LIVY_TEST>
               <SPARK_HOME>${spark.home}</SPARK_HOME>
               <LIVY_LOG_DIR>${livy.log.dir}</LIVY_LOG_DIR>
               <LIVY_SPARK_VERSION>${spark.version}</LIVY_SPARK_VERSION>
@@ -760,7 +760,7 @@
           <artifactId>apache-rat-plugin</artifactId>
           <version>0.12</version>
         </plugin>
-
+-->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-remote-resources-plugin</artifactId>
